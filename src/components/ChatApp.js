@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
-
-
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -18,7 +16,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
+const db = getFirestore(app); // Initialize Firestore here
 
 function ChatApp({ username }) {
   const [messages, setMessages] = useState([]);
@@ -74,16 +72,10 @@ function ChatApp({ username }) {
         {messages.map((message) => (
           <div 
             key={message.id} 
-            className={`flex ${
-              message.sender === username ? 'justify-end' : 'justify-start'
-            }`}
+            className={`flex ${message.sender === username ? 'justify-end' : 'justify-start'}`}
           >
             <div 
-              className={`max-w-[75%] px-4 py-2 rounded-xl ${
-                message.sender === username 
-                  ? 'bg-blue-500 text-white' 
-                  : 'bg-gray-200 text-black'
-              }`}
+              className={`max-w-[75%] px-4 py-2 rounded-xl ${message.sender === username ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
             >
               {message.text}
             </div>
